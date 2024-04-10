@@ -7,6 +7,8 @@
             url: { value: "" },
             urlType: { value: "str" },
             initDict: { value: "{}" },
+            eventName: { value: "" },
+            eventNameType: { value: "str" },
             initDictType: { value: "json" },
             topic: { value: "eventsource" }
         },
@@ -15,6 +17,11 @@
                 type: "str",
                 types: ["str", "env"],
                 typeField: "#node-input-urlType"
+            })
+            $("#node-input-eventName").typedInput({
+                type: "str",
+                types: ["str", "env"],
+                typeField: "#node-input-eventNameType"
             })
             $("#node-input-initDict").typedInput({
                 type: "json",
@@ -51,6 +58,11 @@
         <label for="node-input-initDict"><i class="fa fa-tag"></i> initDict</label>
         <input type="text" id="node-input-initDict" value="{}">
         <input type="hidden" id="node-input-initDictType">
+    </div>
+    <div class="form-row">
+        <label for="node-input-eventName"><i class="fa fa-tag"></i> eventName</label>
+        <input type="text" id="node-input-eventName">
+        <input type="hidden" id="node-input-eventNameType">
     </div>
     <div class="form-row">
         <label for="node-input-topic"><i class="fa fa-tag"></i> Topic</label>

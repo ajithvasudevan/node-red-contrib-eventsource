@@ -1,3 +1,14 @@
+### node-red-contrib-eventsource
+
+This fork of the excellent @parasaurolophus/node-red-eventsource just adds the ability to listen to specific events (I know it goes against the "minimalist" philosophy described by @parasaurolophus below in the Details section). I needed this as the original node is unable to listen to "all" messages due to a limitation of the way the underlying `EventSource.onmessage(..)` works. This is because `onmessage` ignores messages that have am event `type` other than `message`, necessitating the use of `addEventListener(..)`. For example, ESPHome's webserver provides state change events at the `/events` URL and these messages have event name as `state`. These events are not available using the original node. This fork fixes this issue by allowing the user to specify a `eventType` as highlighted in the screenshot below:
+
+![](./screenshot2.png)
+
+If an **eventType** is provided, it will be used to listen to specific events of that type. If this field is left blank, the behavior of this node reverts to that of the original.
+
+
+The rest of the documentation below is as-is from the original project by @parasaurolophus
+
 # @parasaurolophus/node-red-eventsource
 
 Wrap the [eventsource](https://www.npmjs.com/package/eventsource) package for

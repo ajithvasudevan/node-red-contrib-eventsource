@@ -71,13 +71,13 @@ module.exports = function (RED) {
          * 
          * @param {*} initDict `eventSourceInitDict` value
          * 
-         * @param {*} eventName `eventName` value
+         * @param {*} eventType `eventType` value
          */
-        function connect(url, initDict, eventName) {
+        function connect(url, initDict, eventType) {
 
             node.url = url
             node.initDict = initDict || {}
-            node.eventName = eventName || ''
+            node.eventType = eventType || ''
             node.es = new EventSource(node.url, node.initDict)
 
             node.es.onopen = (evt) => {
@@ -94,11 +94,11 @@ module.exports = function (RED) {
 
             }
 
-            if(node.eventName && node.eventName.trim().length) {
-                node.es.addEventListener(node.eventName, function (event) {
+            if(node.eventType && node.eventType.trim().length) {
+                node.es.addEventListener(node.eventType, function (event) {
                     var pld = event.data;
                     try { pld = JSON.parse(pld) } catch(e) {}
-                    node.send([{ topic: node.topic + '/' + node.eventName, payload: pld }, null, null])
+                    node.send([{ topic: node.topic + '/' + node.eventType, payload: pld }, null, null])
                 })
             } else {
                 node.es.onmessage = (event) => {
@@ -154,7 +154,7 @@ module.exports = function (RED) {
             // with a url property
             if ((typeof msg.payload) == 'object' && msg.payload.url !== undefined) {
 
-                connect(msg.payload.url, msg.payload.initDict || {}, node.eventName)
+                connect(msg.payload.url, msg.payload.initDict || {}, node.eventType)
 
             }
         }
@@ -174,7 +174,7 @@ module.exports = function (RED) {
 
                 node.initDict = value
                 node.url = RED.util.evaluateNodeProperty(config.url, config.urlType, node)
-                node.eventName = RED.util.evaluateNodeProperty(config.eventName, config.eventNameType, node)
+                node.eventType = RED.util.evaluateNodeProperty(config.eventType, config.eventTypeType, node)
                 node.topic = RED.util.evaluateNodeProperty(config.topic, "str", node)
                 node.es = null
                 node.lastStatus = -2
@@ -190,7 +190,7 @@ module.exports = function (RED) {
 
                 if (node.url) {
 
-                    connect(node.url, node.initDict, node.eventName)
+                    connect(node.url, node.initDict, node.eventType)
 
                 }
 
